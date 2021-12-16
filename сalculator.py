@@ -6,6 +6,9 @@ class Calculator(QWidget):
     def __init__(self):
         super(Calculator, self).__init__()
 
+        self.op = ""
+        self.num_2 = ""
+
         self.vbox = QVBoxLayout(self)
         self.hbox_input = QHBoxLayout()
         self.hbox_first = QHBoxLayout()
@@ -99,20 +102,33 @@ class Calculator(QWidget):
         self.input.setText(line + param)
 
     def _operation(self, op):
-        self.num_1 = int(self.input.text())
-        self.op = op
-        self.input.setText("")
+        if self.input.text() == "." or self.input.text() == "Error":
+            self.input.setText(str("Error"))
+        else:
+            self.num_1 = float(self.input.text())
+            self.op = op
+            self.input.setText("")
 
     def _result(self):
-        self.num_2 = int(self.input.text())
-        if self.op == "+":
-            self.input.setText(str(self.num_1 + self.num_2))
-        elif self.op == "-":
-            self.input.setText(str(self.num_1 - self.num_2))
-        elif self.op == "*":
-            self.input.setText(str(self.num_1 * self.num_2))
-        elif self.op == "/":
-            self.input.setText(str(self.num_1 / self.num_2))
+        self.num_2 = float(self.input.text())
+        if self.input.text() == "." or self.input.text() == "Error":
+            self.input.setText(str("Error"))
+        elif self.input.text() == "":
+            self.input.setText(str("Error"))
+        else:
+            if self.op == "+":
+                self.input.setText(str(self.num_1 + self.num_2))
+            if self.op == "-":
+                self.input.setText(str(self.num_1 - self.num_2))
+            if self.op == "*":
+                self.input.setText(str(self.num_1 * self.num_2))
+            if self.op == "/":
+                if self.num_2 == 0:
+                    self.input.setText(str("Error"))
+                else:
+                    self.input.setText(str("{0:.3f}".format(self.num_1 / self.num_2)))
+            if self.op == "":
+                self.input.setText(str(self.num_2))
 
     def _clear(self):
         self.input.setText("")
